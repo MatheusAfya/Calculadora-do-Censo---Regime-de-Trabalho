@@ -127,7 +127,19 @@ button:hover {
 	<input type="number" id="integral" placeholder="Digite o número de Integral">
 	<button onclick="calcular()">Calcular</button>
 	<button onclick="limparDados()" style="background: #555; margin-top: 5px;">Limpar Dados</button>
-<div id="resultado"></div>
+	<div id="resultado"></div>
+	
+	<!-- Legenda do Semáforo -->
+	<div id="legenda-semaforo" style="margin-top: 20px; padding: 15px; background: #e6f1ff; border-radius: 8px;">
+		<h3 style="text-align: center; color: #CE0058;">Legenda do Semáforo</h3>
+		<ul style="list-style: none; padding: 0; text-align: left;">
+			<li style="margin-bottom: 5px;"><span style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; background-color: #FF0000; margin-right: 10px;"></span>Vermelho - Crítico</li>
+			<li style="margin-bottom: 5px;"><span style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; background-color: #FFC000; margin-right: 10px;"></span>Amarelo - Insatisfatório</li>
+			<li style="margin-bottom: 5px;"><span style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; background-color: #92D050; margin-right: 10px;"></span>Verde Limão - Satisfatório</li>
+			<li style="margin-bottom: 5px;"><span style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; background-color: #3C7D22; margin-right: 10px;"></span>Verde Oliva - Acima do Satisfatório</li>
+			<li style="margin-bottom: 5px;"><span style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; background-color: #00B0F0; margin-right: 10px;"></span>Azul - Nota máxima</li>
+		</ul>
+	</div>
 <script>
 // Mantendo as classificações originais para que o usuário possa alterá-las depois
 const classificacoes = {
@@ -737,26 +749,29 @@ function calcular() {
 	    resultadoDiv.innerHTML = htmlResultado;
 
 	    // 6. Criar e exibir o Semáforo
-	    // O semáforo agora acende a luz mais próxima da nota interpolada
-	    const notaArredondada = Math.round(nota);
-	    const semaforoHtml = criarSemaforo(notaArredondada);
-	    resultadoDiv.insertAdjacentHTML('beforeend', semaforoHtml);
-	}
+		    // O semáforo agora acende a luz mais próxima da nota interpolada
+		    const notaArredondada = Math.round(nota);
+		    const semaforoHtml = criarSemaforo(notaArredondada);
+		    resultadoDiv.insertAdjacentHTML('beforeend', semaforoHtml);
+		    
+		    // Oculta a legenda estática após o cálculo
+		    document.getElementById('legenda-semaforo').style.display = 'none';
+		}
 
-	function limparDados() {
-	    document.getElementById('curso').value = '';
-	    document.getElementById('horista').value = '';
-	    document.getElementById('parcial').value = '';
-	    document.getElementById('integral').value = '';
-	    document.getElementById('resultado').innerHTML = '';
-	    // Remove o semáforo se existir
-	    const semaforoContainer = document.querySelector('.semaforo-container');
-	    if (semaforoContainer) {
-	        semaforoContainer.remove();
-	    }
-	    // Recria o semáforo vazio
-	    document.getElementById('resultado').insertAdjacentHTML('beforeend', criarSemaforo(-1));
-	}
+		function limparDados() {
+		    document.getElementById('curso').value = '';
+		    document.getElementById('horista').value = '';
+		    document.getElementById('parcial').value = '';
+		    document.getElementById('integral').value = '';
+		    document.getElementById('resultado').innerHTML = '';
+		    // Remove o semáforo se existir
+		    const semaforoContainer = document.querySelector('.semaforo-container');
+		    if (semaforoContainer) {
+		        semaforoContainer.remove();
+		    }
+		    // Mostra a legenda estática novamente
+		    document.getElementById('legenda-semaforo').style.display = 'block';
+		}
 
 	function criarSemaforo(notaArredondada) {
 	    // Cores padrão (apagadas)
@@ -857,15 +872,15 @@ function calcular() {
 	}
 
 	// Inicializa o semáforo vazio ao carregar a página
-	document.addEventListener('DOMContentLoaded', () => {
-	    // Remove o semáforo inicial se existir (pois ele será criado no cálculo)
-	    const semaforoContainer = document.querySelector('.semaforo-container');
-	    if (semaforoContainer) {
-	        semaforoContainer.remove();
-	    }
-	    // Recria o semáforo vazio
-	    document.getElementById('resultado').insertAdjacentHTML('beforeend', criarSemaforo(-1));
-	});
+		document.addEventListener('DOMContentLoaded', () => {
+		    // Remove o semáforo inicial se existir (pois ele será criado no cálculo)
+		    const semaforoContainer = document.querySelector('.semaforo-container');
+		    if (semaforoContainer) {
+		        semaforoContainer.remove();
+		    }
+		    // Garante que a legenda esteja visível ao carregar a página
+		    document.getElementById('legenda-semaforo').style.display = 'block';
+		});
 	</script>
 	</body>
 	</html>
